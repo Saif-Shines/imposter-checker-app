@@ -1,0 +1,6 @@
+.DS_Store
+**/.fdk/**
+**/coverage/**
+**/.report.json
+**/.vscode/**
+**/node_modules/**
