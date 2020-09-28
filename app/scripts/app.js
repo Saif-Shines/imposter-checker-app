@@ -1,4 +1,5 @@
 var client;
+var dna = new TypingDNA();
 const MATCH_ENDPOINT = 'https://api.typingdna.com/match';
 
 isDocumentReady();
@@ -8,20 +9,12 @@ function startAppRender() {
     .initialized()
     .then(function(_client) {
       client = _client;
-      client.events.on('app.activated', renderContactName);
+      client.events.on('app.activated', setupInterception);
     })
     .catch(errorHandler);
 }
 
-function renderContactName() {
-  var textElement = document.getElementById('apptext');
-  client.data
-    .get('contact')
-    .then(function({ contact: { name } }) {
-      textElement.innerHTML = `Data Method returned with requester name: ${name}`;
-    })
-    .catch(errorHandler);
-}
+function setupInterception() {}
 
 function errorHandler(err) {
   console.error(`App failed to initialize because...`);
