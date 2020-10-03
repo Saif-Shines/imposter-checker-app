@@ -1,6 +1,6 @@
 var client;
-var dna = new TypingDNA();
-const MATCH_ENDPOINT = 'https://api.typingdna.com/match';
+var shouldIntercept;
+
 
 isDocumentReady();
 
@@ -14,7 +14,17 @@ function startAppRender() {
     .catch(errorHandler);
 }
 
-function setupInterception() {}
+function setupInterception() {
+  shouldIntercept = false;
+  let secureModal = document.querySelector('.secureSetup');
+  secureModal.addEventListener('click', dispSecModal);
+  function dispSecModal() {
+    client.interface.trigger('showModal', {
+      title: 'Secure Modal',
+      template: 'views/modal.html'
+    });
+  }
+}
 
 function errorHandler(err) {
   console.error(`App failed to initialize because...`);
