@@ -8,16 +8,28 @@
   </script>
   <script nomodule src="https://unpkg.com/@freshworks/crayons/dist/crayons/crayons.js">
   </script>
-  <script src="scripts/typingdna.js"></script>
+  <script src="https://api.typingdna.com/scripts/typingdna.js"></script>
 </head>
 
 <body>
   <div class="fw-widget-wrapper">
-    <p>Let's make your session imposter free.</p>
-    <fw-textarea cols=25 rows=5 label="Give my TypingDNA" placeholder="Enter the data" state="normal"></fw-textarea>
-    <fw-button size="small" color="secondary" expand>Verify DNA</fw-button>
+    <blockquote class="quote-one">I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and
+      at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my
+      best.</blockquote>
+    <fw-textarea cols=45 rows=5 label="Give my TypingDNA" placeholder="Enter the data" state="normal"
+      class="initial-dna"></fw-textarea>
+    <br>
+    <p class="intercept-reply"> Secure "Reply" <fw-toggle size="medium"></fw-toggle>
+    </p>
+    <hr>
+    <blockquote class="quote-one">Two things are infinite: the universe and human stupidity; and I'm not sure about the
+      universe.</blockquote>
+    <fw-textarea cols=45 rows=5 label="Give my TypingDNA" placeholder="Enter the data" state="normal" class="final-dna">
+    </fw-textarea>
+    <fw-button size="small" color="secondary" class="verifyBtn" expand>Verify DNA</fw-button>
   </div>
 </body>
-<script src="./../scripts/app.js"></script>
-<script src="./../scripts/modal.js"></script>
+<script type="module" src="./../scripts/app.js"></script>
+<script defer src="./../scripts/modal.js"></script>
+
 </html>
