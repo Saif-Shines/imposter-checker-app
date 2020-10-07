@@ -1,4 +1,5 @@
 var client;
+var tdna = new TypingDNA();
 var [input_init, input_final, verifyNow, toSecureReply, quoteOne] = [
   document.querySelector('.initial-dna'),
   document.querySelector('.final-dna'),
@@ -20,14 +21,35 @@ function replyToggle() {
 }
 
 function capturePattern() {
+  console.log('capturing pattern...');
+  console.log(input_init.value, input_final.value);
   var typingPattern_init = tdna.getTypingPattern({
     type: 0,
     length: 160,
-    text: input_init.value
+    text: String(input_init.value)
+  });
+
+  var typingPattern_final = tdna.getTypingPattern({
+    type: 0,
+    length: 160,
+    text: String(input_final.value)
   });
 
   var patternQuality = tdna.getQuality(typingPattern_init);
   console.log(patternQuality);
+
+  var patterns = {
+    tp1: String(typingPattern_init),
+    tp2: String(typingPattern_final),
+    method: 'POST'
+  };
+
+  client.request.invoke('doesMatch', patterns).then(
+    function(data) {},
+    function(err) {
+      console.log(err);
+    }
+  );
 }
 
 var ready = callback => {
