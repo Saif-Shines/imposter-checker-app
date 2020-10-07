@@ -1,5 +1,4 @@
 var client;
-var shouldIntercept;
 
 isDocumentReady();
 

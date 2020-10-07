@@ -1,11 +1,11 @@
-var tdna = new TypingDNA();
 var client;
-var [input_init, input_final, verifyNow] = [
+var [input_init, input_final, verifyNow, toSecureReply, quoteOne] = [
   document.querySelector('.initial-dna'),
   document.querySelector('.final-dna'),
-  document.querySelector('.verifyBtn')
+  document.querySelector('.verifyBtn'),
+  document.querySelector('.intercept-reply'),
+  document.querySelector('.quote-one')
 ];
-var toSecureReply = document.querySelector('.intercept-reply');
 
 verifyNow.addEventListener('click', capturePattern);
 toSecureReply.addEventListener('fwChange', replyToggle);
@@ -19,22 +19,15 @@ function replyToggle() {
   }
 }
 
-function capturePattern(e) {
+function capturePattern() {
   var typingPattern_init = tdna.getTypingPattern({
     type: 0,
     length: 160,
     text: input_init.value
   });
+
   var patternQuality = tdna.getQuality(typingPattern_init);
   console.log(patternQuality);
-  client.request.invoke('getQuote', {}).then(
-    data => {
-      console.log(data);
-    },
-    error => {
-      console.log(error);
-    }
-  );
 }
 
 var ready = callback => {
@@ -45,5 +38,13 @@ var ready = callback => {
 ready(() => {
   app.initialized().then(_client => {
     client = _client;
+    client.request.invoke('getQuote', {}).then(
+      data => {
+        quoteOne.innerText = String(JSON.parse(data.response).quote);
+      },
+      error => {
+        console.log(error);
+      }
+    );
   });
 });
