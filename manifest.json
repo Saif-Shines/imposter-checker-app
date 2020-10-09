@@ -6,12 +6,17 @@
         "ticket_sidebar": {
           "url": "index.html",
           "icon": "styles/images/icon.svg"
+        },
+        "ticket_background": {
+          "url": "views/background.html"
         }
       }
     }
   },
   "dependencies": {
     "requests": "0.3.0",
-    "buffer": "5.6.0"
+    "buffer": "5.6.0",
+    "superagent": "6.1.0",
+    "querystring": "0.2.0"
   }
 }

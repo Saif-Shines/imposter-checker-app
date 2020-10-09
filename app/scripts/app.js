@@ -1,4 +1,5 @@
 var client;
+var tdna = new TypingDNA();
 
 isDocumentReady();
 
@@ -7,14 +8,18 @@ function startAppRender() {
     .initialized()
     .then(function(_client) {
       client = _client;
-      client.events.on('app.activated', configureInterception);
+      client.events.on('app.activated', startApp);
     })
     .catch(errorHandler);
 }
 
-function configureInterception() {
+function startApp() {
+  console.log('starting the app');
   let secureModal = document.querySelector('.secureSetup');
   secureModal.addEventListener('click', dispSecModal);
+  let setRecord = document.querySelector('.setRecord');
+  setRecord.addEventListener('click', createRecord);
+
   client.events.on('ticket.sendReply', shouldInterceptReply, {
     intercept: true
   });
@@ -35,6 +40,12 @@ function configureInterception() {
       console.log('allow sending');
       event.helper.done();
     }
+  }
+
+  function createRecord() {
+    console.log('cliked on set record btn');
+    var quoteOnePattern = tdna.getTypingPattern({ type: 0, length: 160 });
+    localStorage.setItem('quoteOnePattern', quoteOnePattern);
   }
 }
 

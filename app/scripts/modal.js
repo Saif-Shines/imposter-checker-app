@@ -22,18 +22,12 @@ function replyToggle() {
 
 function capturePattern() {
   console.log('capturing pattern...');
-  console.log(input_init.value, input_final.value);
   var typingPattern_init = tdna.getTypingPattern({
     type: 0,
-    length: 160,
-    text: String(input_init.value)
+    length: 160
   });
 
-  var typingPattern_final = tdna.getTypingPattern({
-    type: 0,
-    length: 160,
-    text: String(input_final.value)
-  });
+  var typingPattern_final = localStorage.getItem('quoteOnePattern');
 
   var patternQuality = tdna.getQuality(typingPattern_init);
   console.log(patternQuality);
@@ -45,7 +39,9 @@ function capturePattern() {
   };
 
   client.request.invoke('doesMatch', patterns).then(
-    function(data) {},
+    function(data) {
+      console.log(JSON.parse(data.response.text));
+    }, 
     function(err) {
       console.log(err);
     }

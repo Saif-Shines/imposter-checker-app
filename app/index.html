@@ -4,6 +4,7 @@
   <script src="https://static.freshdev.io/fdk/2.0/assets/fresh_client.js"></script>
   <link rel="stylesheet" type="text/css" href="styles/style.css" />
   <link rel="stylesheet" type="text/css" href="https://static.freshdev.io/fdk/2.0/assets/freshdesk.css" />
+  <script src="https://api.typingdna.com/scripts/typingdna.js"></script>
   <script type="module" src="https://unpkg.com/@freshworks/crayons/dist/crayons/crayons.esm.js">
   </script>
   <script nomodule src="https://unpkg.com/@freshworks/crayons/dist/crayons/crayons.js">
@@ -11,11 +12,30 @@
 </head>
 
 <body>
+  <body>
   <div class="fw-widget-wrapper">
-    <p>Let's make your session imposter free.</p>
-    <p>Open up a modal, and submit your pattern to lock certain features in this session!</p>
-    <fw-button size="small" color="secondary" class="secureSetup" expand>Secure the Session</fw-button>
+    <blockquote class="quote-one">I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and
+      at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my
+      best.</blockquote>
+    <fw-textarea cols=25 rows=5 label="Give my TypingDNA" placeholder="Enter the data" state="normal"
+      class="initial-dna"></fw-textarea>
+    <br>
+    <p class="intercept-reply"> Secure "Reply" <fw-toggle size="medium"></fw-toggle>
+    </p>
+    <hr>
+
+    <fw-button size="small" color="secondary" class="firstPattern" expand>Save First Pattern</fw-button>
   </div>
 </body>
-<script src="scripts/app.js"></script>
+  <!-- <div class="fw-widget-wrapper">
+    <p class="quote-one">Two things are infinite: the universe and human stupidity; and I'm not sure about the
+      universe.</p>
+    <fw-textarea cols=22 rows=4 label="Give my TypingDNA" placeholder="Enter the data" state="normal" class="final-dna">
+    </fw-textarea>
+    <fw-button size="small" color="secondary" class="setRecord" expand>Set DB Record</fw-button>
+    <fw-button size="small" color="secondary" class="secureSetup" expand>Secure the Session</fw-button>
+  </div> -->
+</body>
+
+<script defer src="scripts/app.js"></script>
 </html>
