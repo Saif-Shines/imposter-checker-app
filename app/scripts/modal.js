@@ -32,20 +32,7 @@ function capturePattern() {
   var patternQuality = tdna.getQuality(typingPattern_init);
   console.log(patternQuality);
 
-  var patterns = {
-    tp1: String(typingPattern_init),
-    tp2: String(typingPattern_final),
-    method: 'POST'
-  };
-
-  client.request.invoke('doesMatch', patterns).then(
-    function(data) {
-      console.log(JSON.parse(data.response.text));
-    }, 
-    function(err) {
-      console.log(err);
-    }
-  );
+  
 }
 
 var ready = callback => {
@@ -56,13 +43,6 @@ var ready = callback => {
 ready(() => {
   app.initialized().then(_client => {
     client = _client;
-    client.request.invoke('getQuote', {}).then(
-      data => {
-        quoteOne.innerText = String(JSON.parse(data.response).quote);
-      },
-      error => {
-        console.log(error);
-      }
-    );
+
   });
 });

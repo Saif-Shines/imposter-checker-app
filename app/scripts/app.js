@@ -14,39 +14,82 @@ function startAppRender() {
 }
 
 function startApp() {
+  var quoteOne = document.querySelector('.quote-one');
+  client.request.invoke('getQuote', {}).then(
+    data => {
+      quoteOne.innerText = String(JSON.parse(data.response).quote);
+    },
+    error => {
+      console.log(error);
+    }
+  );
   console.log('starting the app');
-  let secureModal = document.querySelector('.secureSetup');
-  secureModal.addEventListener('click', dispSecModal);
-  let setRecord = document.querySelector('.setRecord');
-  setRecord.addEventListener('click', createRecord);
+  let firstPattern = document.querySelector('.savefirstPattern');
+  firstPattern.addEventListener('click', storePattern);
 
-  client.events.on('ticket.sendReply', shouldInterceptReply, {
+  let imposterFreeSetup = document.querySelector('.open-modal');
+  imposterFreeSetup.addEventListener('click', () => {
+    client.interface
+      .trigger('showModal', {
+        title: 'Setup Imposter free session',
+        template: 'views/background.html'
+      })
+      .then(function(data) {
+        console.log('from imposterfreesetup', data);
+      })
+      .catch(function(error) {
+        console.log('from imposterfreesetup', error);
+      });
+  });
+
+  function storePattern() {
+    console.log('storing first pattern');
+    var firstPattern = tdna.getTypingPattern({ type: 0, length: 160 });
+    localStorage.setItem('firstPattern', firstPattern);
+  }
+
+  client.events.on('ticket.propertiesUpdated', isImposter, {
     intercept: true
   });
 
-  function dispSecModal() {
-    client.interface.trigger('showModal', {
-      title: 'Secure Modal',
-      template: 'views/modal.html'
-    });
-  }
+  function isImposter(event) {
+    checkPattern();
 
-  function shouldInterceptReply(event) {
-    console.log(event.type, localStorage.getItem('reply'));
-    if (event.type == 'ticket.sendReply' && localStorage.getItem('reply')) {
-      console.log('mismatch');
-      event.helper.fail('Mismatch in typing detected!');
-    } else {
-      console.log('allow sending');
-      event.helper.done();
+    function checkPattern() {
+      var [typ1, typ2] = [
+        localStorage.getItem('firstPattern'),
+        localStorage.getItem('secondPattern')
+      ];
+
+      var patterns = { tp1: String(typ1), tp2: String(typ2) };
+
+      client.request.invoke('doesMatch', patterns).then(
+        function(data) {
+          var response = JSON.parse(data.response);
+          console.log(response);
+          if (response.result == 1) {
+            console.log('allow sending', response.result);
+            event.helper.done();
+          } else {
+            console.log('mismatch', event);
+            event.helper.fail('Seems like an imposter');
+          }
+        },
+        function(err) {
+          console.log(err);
+        }
+      );
     }
   }
 
-  function createRecord() {
-    console.log('cliked on set record btn');
-    var quoteOnePattern = tdna.getTypingPattern({ type: 0, length: 160 });
-    localStorage.setItem('quoteOnePattern', quoteOnePattern);
-  }
+  // client.events.on('ticket.sendReply', isImposter, { intercept: true });
+
+  // client.events.on('ticket.deleteTicketClick', isImposter, {
+  //   intercept: true
+  // });
+  // client.events.on('ticket.closeTicketClick', isImposter, {
+  //   intercept: true
+  // });
 }
 
 function errorHandler(err) {

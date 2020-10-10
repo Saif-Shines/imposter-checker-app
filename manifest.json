@@ -7,8 +7,9 @@
           "url": "index.html",
           "icon": "styles/images/icon.svg"
         },
-        "ticket_background": {
-          "url": "views/background.html"
+        "ticket_conversation_editor": {
+          "url": "views/background.html",
+          "icon": "styles/images/icon.svg"
         }
       }
     }

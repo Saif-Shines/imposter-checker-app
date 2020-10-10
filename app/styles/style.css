@@ -8,7 +8,7 @@ html {
   box-sizing: inherit;
 }
 
-.fw-widget-wrapper {
+.fw-widget-wrapper, .background {
   display: flex;
   flex-flow: column wrap;
   justify-content: center;

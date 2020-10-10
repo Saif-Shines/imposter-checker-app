@@ -15,8 +15,8 @@ var options = {
       'Basic ' + Buffer(apiKey + ':' + apiSecret).toString('base64'),
     'Content-Type': 'application/x-www-form-urlencoded'
   },
-  min: '40',
-  max: '60'
+  min: '10',
+  max: '30'
 };
 
 function getQuote() {
@@ -33,16 +33,24 @@ function getQuote() {
 }
 
 function doesMatch(patterns) {
+  delete patterns.iparams;
+  delete patterns.isInstall;
+  console.log(patterns);
   superagent
     .post('https://api.typingdna.com/match')
     .set('Content-Type', 'application/x-www-form-urlencoded')
     .set('Cache-Control', 'no-cache')
     .auth(apiKey, apiSecret)
     .send(patterns)
-    .then(res => {
-      renderData(null, res);
-    }, err => console.error(err));
-
+    .then(
+      data => {
+        console.log('***************************************')
+        console.log('received data', data.text);
+        renderData(null, data.text);
+      },
+      err => console.error(err)
+    )
+    .catch(console.error);
 }
 
 exports = {
