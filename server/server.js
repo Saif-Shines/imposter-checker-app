@@ -3,8 +3,6 @@ var [apiKey, apiSecret] = [
   '5016de95a39c8dec3ebbcec368457ab9'
 ];
 var superagent = require('superagent');
-var querystring = require('querystring');
-var base_url = 'api.typingdna.com';
 
 var requests = require('requests');
 var Buffer = require('buffer/').Buffer;
