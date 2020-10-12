@@ -1,11 +1,5 @@
 # Imposter Checker App
 
-### Motivation
-Sorry, I couldn't come up with a nicer name for the app. But here's how I got into hackathon.
-
-- It's been 1.5 years since I graduated from my college. I quickly learnt, now I need to start paying my education loan. I simply want to repay it. So I chose to participate in the hackathon.
-- With 1.5 yrs of experience I learnt Javascript and building apps on Freshworks Developer Platform. I anticipated to put my skills to action which is the next reason I participated in this Hackathon.
-
 ### What does this app do?
 
 It is an web app that runs on a ticketing tool called [Freshdesk](https://freshdesk.com/). Any employee that is expected to solve tickets can use this app to keep their session imposter free. Did you forget logging out? Is your session still active? No worries :-)
@@ -13,7 +7,6 @@ It is an web app that runs on a ticketing tool called [Freshdesk](https://freshd
 ### Demo
 ![Alt](https://i.ibb.co/4FbDRR1/image.png)
 [See the Screenshot](https://ibb.co/YN5KBB0)
-Just for the demo purpose, I created a small video that over spilled by 5 more min than expected on Zoom. Don't forget to [watch it](https://freshworks.zoom.us/rec/share/0xljtqiEM_CPgfch8Q2b7Cdou584Ib9RrsfNVTcOmbCgAwLOVFUaWyUgyFAJnCFR.oYUB5IGNdJIR5ndP) with passcode *typing@dna1*
 
 **What does Demo doesn't cover?**
 1. I plan on improving UX
@@ -67,4 +60,3 @@ The app's user base would be limited to [businesses who use Freshworks products]
 Well, this is my first non-student level Hackathon that I've participated it. Without a team has been pretty much hard hectic as well. Over all, I enjoyed participating it and I do see a lot of potential that TypingDNA has.
 
 Thanks to Adrian form TypingDNA Slack community in trying out and helping with Technical queries.
-
