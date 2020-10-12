@@ -1,33 +1,39 @@
-var client;
+var client, quoteOne, firstPattern, imposterFreeSetup;
 var tdna = new TypingDNA();
 
-isDocumentReady();
+[quoteOne, firstPattern, imposterFreeSetup] = [
+  document.querySelector('.quote-one'),
+  document.querySelector('.savefirstPattern'),
+  document.querySelector('.open-modal')
+];
 
-function startAppRender() {
-  app
-    .initialized()
-    .then(function(_client) {
+var errorHandler = console.error;
+
+document.onreadystatechange = function() {
+  if (document.readyState == 'complete') startAppRender();
+
+  function startAppRender() {
+    var getClientObj = app.initialized();
+
+    getClientObj.then(addClient).catch(errorHandler);
+
+    function addClient(_client) {
       client = _client;
       client.events.on('app.activated', startApp);
-    })
-    .catch(errorHandler);
-}
+    }
+  }
+};
 
 function startApp() {
-  var quoteOne = document.querySelector('.quote-one');
-  client.request.invoke('getQuote', {}).then(
-    data => {
-      quoteOne.innerText = String(JSON.parse(data.response).quote);
-    },
-    error => {
-      console.log(error);
-    }
-  );
-  console.log('starting the app');
-  let firstPattern = document.querySelector('.savefirstPattern');
   firstPattern.addEventListener('click', storePattern);
 
-  let imposterFreeSetup = document.querySelector('.open-modal');
+  var renderQuote = client.request.invoke('getQuote', {});
+
+  renderQuote.then(data => {
+    quoteOne.innerText = String(JSON.parse(data.response).quote);
+  }, errorHandler);
+
+
   imposterFreeSetup.addEventListener('click', () => {
     client.interface
       .trigger('showModal', {
@@ -90,18 +96,4 @@ function startApp() {
   // client.events.on('ticket.closeTicketClick', isImposter, {
   //   intercept: true
   // });
-}
-
-function errorHandler(err) {
-  console.error(`App failed to initialize because...`);
-  console.error(err);
-}
-
-function isDocumentReady() {
-  if (document.readyState != 'loading') {
-    console.info('Oh you deferred scripts!');
-    startAppRender();
-  } else {
-    document.addEventListener('DOMContentLoaded', startAppRender);
-  }
 }
