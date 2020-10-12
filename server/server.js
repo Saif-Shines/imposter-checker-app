@@ -4,43 +4,33 @@ var [apiKey, apiSecret] = [
 ];
 
 var superagent = require('superagent');
+var handleErr = console.error;
 
+function sendtoFrontend(data) {
+  renderData(null, data.text);
+}
 
 function getQuote() {
-  superagent
+  var quote = superagent
     .get('https://api.typingdna.com/quote')
     .set('Content-Type', 'application/x-www-form-urlencoded')
     .send({ max: '45' })
-    .auth(apiKey, apiSecret)
-    .then(
-      data => {
-        console.log('*** **** **** *** *** ');
-        console.log('received quote', data.text);
-        renderData(null, data.text);
-      },
-      err => console.error(err)
-    );
+    .auth(apiKey, apiSecret);
+
+  quote.then(sendtoFrontend, handleErr);
 }
 
 function doesMatch(patterns) {
   delete patterns.iparams;
   delete patterns.isInstall;
   console.log(patterns);
-  superagent
+  var matchLevel = superagent
     .post('https://api.typingdna.com/match')
     .set('Content-Type', 'application/x-www-form-urlencoded')
     .set('Cache-Control', 'no-cache')
     .auth(apiKey, apiSecret)
-    .send(patterns)
-    .then(
-      data => {
-        console.log('***************************************');
-        console.log('received data', data.text);
-        renderData(null, data.text);
-      },
-      err => console.error(err)
-    )
-    .catch(console.error);
+    .send(patterns);
+  matchLevel.then(sendtoFrontend, handleErr);
 }
 
 exports = {
