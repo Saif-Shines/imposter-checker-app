@@ -26,6 +26,7 @@ document.onreadystatechange = function() {
 };
 
 function startApp() {
+  
   var firstQuote;
   imposterFreeSetup.addEventListener('click', openModal);
 
