@@ -26,7 +26,6 @@ document.onreadystatechange = function() {
 };
 
 function startApp() {
-  
   var firstQuote;
   imposterFreeSetup.addEventListener('click', openModal);
 
@@ -35,6 +34,7 @@ function startApp() {
   renderQuote.then(data => {
     firstQuote = String(JSON.parse(data.response).quote);
     quoteOne.innerText = firstQuote;
+    localStorage.setItem('secondQuote', String(firstQuote));
   }, errorHandler);
 
   function openModal() {

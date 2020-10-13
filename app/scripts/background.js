@@ -79,13 +79,14 @@ document.onreadystatechange = function() {
 
       client = _client;
       console.log('background app loded');
+      secondQuote = localStorage.getItem('secondQuote');
+      quoteTwoBtn.innerText = secondQuote;
+      // var renderQuote = client.request.invoke('getQuote', {});
 
-      var renderQuote = client.request.invoke('getQuote', {});
-
-      renderQuote.then(data => {
-        secondQuote = String(JSON.parse(data.response).quote);
-        quoteTwoBtn.innerText = secondQuote;
-      }, errorHandler);
+      // renderQuote.then(data => {
+      //   secondQuote = String(JSON.parse(data.response).quote);
+      //   quoteTwoBtn.innerText = secondQuote;
+      // }, errorHandler);
 
       saveSettings.addEventListener('click', function saveSecondPattern() {
         var pattern2 = tdna.getTypingPattern({
