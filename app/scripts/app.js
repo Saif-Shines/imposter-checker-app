@@ -8,6 +8,7 @@ var tdna = new TypingDNA();
 ];
 
 var errorHandler = console.error;
+var logger = console.log;
 
 document.onreadystatechange = function() {
   if (document.readyState == 'complete') startAppRender();
@@ -25,32 +26,30 @@ document.onreadystatechange = function() {
 };
 
 function startApp() {
-  firstPattern.addEventListener('click', storePattern);
+  var firstQuote;
+  imposterFreeSetup.addEventListener('click', openModal);
 
   var renderQuote = client.request.invoke('getQuote', {});
 
   renderQuote.then(data => {
-    quoteOne.innerText = String(JSON.parse(data.response).quote);
+    firstQuote = String(JSON.parse(data.response).quote);
+    quoteOne.innerText = firstQuote;
   }, errorHandler);
 
-
-  imposterFreeSetup.addEventListener('click', () => {
+  function openModal() {
+    var modal = { title: 'Secure Session', template: 'views/background.html' };
+    storePattern();
     client.interface
-      .trigger('showModal', {
-        title: 'Setup Imposter free session',
-        template: 'views/background.html'
-      })
-      .then(function(data) {
-        console.log('from imposterfreesetup', data);
-      })
-      .catch(function(error) {
-        console.log('from imposterfreesetup', error);
-      });
-  });
+      .trigger('showModal', modal)
+      .then(logger)
+      .catch(errorHandler);
+  }
 
   function storePattern() {
-    console.log('storing first pattern');
-    var firstPattern = tdna.getTypingPattern({ type: 0, length: 160 });
+    var firstPattern = tdna.getTypingPattern({
+      type: 1,
+      text: String(firstQuote)
+    });
     localStorage.setItem('firstPattern', firstPattern);
   }
 
