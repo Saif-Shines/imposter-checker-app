@@ -4,68 +4,47 @@ var client;
 var errorHandler = console.error;
 var logger = console.log;
 
-document
-  .querySelector('.interceptSendReply')
-  .addEventListener('fwChange', shouldAllowReply);
-document
-  .querySelector('.interceptDelTkt')
-  .addEventListener('fwChange', shouldDeleteTicket);
-document
-  .querySelector('.interceptPropUpdated')
-  .addEventListener('fwChange', shouldAllowPropUpdate);
-document
-  .querySelector('.interceptCloseTkt')
-  .addEventListener('fwChange', shouldCloseTkt);
+function addListener(classname, handler) {
+  document
+    .querySelector(String(classname))
+    .addEventListener('fwChange', handler);
+}
 
-function shouldAllowReply() {
-  console.log('Triggeredz: should Allow Reply');
+addListener('.interceptSendReply', shouldAllowReply);
+addListener('.interceptDelTkt', shouldDeleteTicket);
+addListener('.interceptPropUpdated', shouldAllowPropUpdate);
+addListener('.interceptCloseTkt', shouldCloseTkt);
+
+function handleLocalStorage(key) {
   if (
-    localStorage.getItem('shouldInterceptReply') == 'true' ||
-    localStorage.getItem('shouldInterceptReply') == null
+    localStorage.getItem(String(key)) == 'true' ||
+    localStorage.getItem(String(key)) == null
   ) {
     console.log('setting item to false');
-    localStorage.setItem('shouldInterceptReply', 'false');
+    localStorage.setItem(String(key), 'false');
   } else {
-    localStorage.setItem('shouldInterceptReply', 'true');
+    localStorage.setItem(String(key), 'true');
   }
+}
+
+function shouldAllowReply() {
+  handleLocalStorage('shouldInterceptReply');
 }
 
 function shouldDeleteTicket() {
-  if (
-    localStorage.getItem('shouldInterceptDelete') == 'true' ||
-    localStorage.getItem('shouldInterceptReply') == null
-  ) {
-    localStorage.setItem('shouldInterceptDelete', 'false');
-  } else {
-    localStorage.setItem('shouldInterceptDelete', 'true');
-  }
+  handleLocalStorage('shouldInterceptDelete');
 }
 
 function shouldAllowPropUpdate() {
-  if (
-    localStorage.getItem('interceptPropUpdate') == 'true' ||
-    localStorage.getItem('interceptPropUpdate') == null
-  ) {
-    localStorage.setItem('interceptPropUpdate', 'false');
-  } else {
-    localStorage.setItem('interceptPropUpdate', 'true');
-  }
+  handleLocalStorage('shouldInterceptUpdate');
 }
 
 function shouldCloseTkt() {
-  console.log('Triggered: interceptPropUpdate');
-  if (
-    localStorage.getItem('interceptCloseTkt') == 'true' ||
-    localStorage.getItem('interceptCloseTkt') == null
-  ) {
-    localStorage.setItem('interceptCloseTkt', 'false');
-  } else {
-    localStorage.setItem('interceptCloseTkt', 'true');
-  }
+  handleLocalStorage('interceptCloseTkt');
 }
 
 document.onreadystatechange = function() {
-  if (document.readyState == 'complete') startAppRender();
+  if (document.readyState == 'interactive') startAppRender();
 
   function startAppRender() {
     var onInit = app.initialized();
@@ -76,25 +55,19 @@ document.onreadystatechange = function() {
 
     function getClientObj(_client) {
       var secondQuote;
-
       client = _client;
-      console.log('background app loded');
       secondQuote = localStorage.getItem('secondQuote');
       quoteTwoBtn.innerText = secondQuote;
-      // var renderQuote = client.request.invoke('getQuote', {});
+      saveSettings.addEventListener('click', saveSecondPattern);
 
-      // renderQuote.then(data => {
-      //   secondQuote = String(JSON.parse(data.response).quote);
-      //   quoteTwoBtn.innerText = secondQuote;
-      // }, errorHandler);
-
-      saveSettings.addEventListener('click', function saveSecondPattern() {
+      function saveSecondPattern() {
         var pattern2 = tdna.getTypingPattern({
           type: 1,
           text: String(secondQuote)
         });
         localStorage.setItem('secondPattern', pattern2);
-      });
+        client.instance.close();
+      }
     }
   }
 };
