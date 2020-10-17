@@ -1,6 +1,9 @@
 var tdna = new TypingDNA();
 var client;
 
+var errorHandler = console.error;
+var logger = console.log;
+
 document
   .querySelector('.interceptSendReply')
   .addEventListener('fwChange', shouldAllowReply);
@@ -61,30 +64,37 @@ function shouldCloseTkt() {
   }
 }
 
-var ready = callback => {
-  if (document.readyState != 'loading') callback();
-  else document.addEventListener('DOMContentLoaded', callback);
-};
+document.onreadystatechange = function() {
+  if (document.readyState == 'complete') startAppRender();
 
-ready(() => {
-  app.initialized().then(_client => {
-    client = _client;
-    console.log('background app loded');
-    var quoteTwo = document.querySelector('.quote-two');
-
-    client.request.invoke('getQuote', {}).then(
-      data => {
-        quoteTwo.innerText = String(JSON.parse(data.response).quote);
-      },
-      error => {
-        console.log(error);
-      }
-    );
-
+  function startAppRender() {
+    var onInit = app.initialized();
+    var quoteTwoBtn = document.querySelector('.quote-two');
     var saveSettings = document.querySelector('.saveSettings');
-    saveSettings.addEventListener('click', function() {
-      var pattern2 = tdna.getTypingPattern({ type: 0, length: 160 });
-      localStorage.setItem('secondPattern', String(pattern2));
-    });
-  });
-});
+
+    onInit.then(getClientObj);
+
+    function getClientObj(_client) {
+      var secondQuote;
+
+      client = _client;
+      console.log('background app loded');
+      secondQuote = localStorage.getItem('secondQuote');
+      quoteTwoBtn.innerText = secondQuote;
+      // var renderQuote = client.request.invoke('getQuote', {});
+
+      // renderQuote.then(data => {
+      //   secondQuote = String(JSON.parse(data.response).quote);
+      //   quoteTwoBtn.innerText = secondQuote;
+      // }, errorHandler);
+
+      saveSettings.addEventListener('click', function saveSecondPattern() {
+        var pattern2 = tdna.getTypingPattern({
+          type: 1,
+          text: String(secondQuote)
+        });
+        localStorage.setItem('secondPattern', pattern2);
+      });
+    }
+  }
+};

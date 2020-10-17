@@ -1,54 +1,36 @@
 var [apiKey, apiSecret] = [
   '7f4692a27293d3ad31e3bef477726198',
-  '5016de95a39c8dec3ebbcec368457ab9'
+  '5fb3d3b43922cf2d12df613b6411d470'
 ];
+
 var superagent = require('superagent');
+var handleErr = console.error;
 
-var requests = require('requests');
-var Buffer = require('buffer/').Buffer;
-
-var options = {
-  headers: {
-    Authorization:
-      'Basic ' + Buffer(apiKey + ':' + apiSecret).toString('base64'),
-    'Content-Type': 'application/x-www-form-urlencoded'
-  },
-  min: '10',
-  max: '30'
-};
+function sendtoFrontend(data) {
+  renderData(null, data.text);
+}
 
 function getQuote() {
-  console.log('getting Quote');
-  requests('https://api.typingdna.com/quote', options)
-    .on('data', function(chunk) {
-      console.log(chunk);
-      renderData(null, chunk);
-    })
-    .on('end', function(err) {
-      if (err) return console.log('connection closed due to errors', err);
-      console.log('end');
-    });
+  var quote = superagent
+    .get('https://api.typingdna.com/quote')
+    .set('Content-Type', 'application/x-www-form-urlencoded')
+    .send({ max: '45' })
+    .auth(apiKey, apiSecret);
+
+  quote.then(sendtoFrontend, handleErr);
 }
 
 function doesMatch(patterns) {
   delete patterns.iparams;
   delete patterns.isInstall;
   console.log(patterns);
-  superagent
+  var matchLevel = superagent
     .post('https://api.typingdna.com/match')
     .set('Content-Type', 'application/x-www-form-urlencoded')
     .set('Cache-Control', 'no-cache')
     .auth(apiKey, apiSecret)
-    .send(patterns)
-    .then(
-      data => {
-        console.log('***************************************')
-        console.log('received data', data.text);
-        renderData(null, data.text);
-      },
-      err => console.error(err)
-    )
-    .catch(console.error);
+    .send(patterns);
+  matchLevel.then(sendtoFrontend, handleErr);
 }
 
 exports = {

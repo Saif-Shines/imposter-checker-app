@@ -1,50 +1,56 @@
-var client;
+var client, quoteOne, firstPattern, imposterFreeSetup;
 var tdna = new TypingDNA();
 
-isDocumentReady();
+[quoteOne, firstPattern, imposterFreeSetup] = [
+  document.querySelector('.quote-one'),
+  document.querySelector('.savefirstPattern'),
+  document.querySelector('.open-modal')
+];
 
-function startAppRender() {
-  app
-    .initialized()
-    .then(function(_client) {
+var errorHandler = console.error;
+var logger = console.log;
+
+document.onreadystatechange = function() {
+  if (document.readyState == 'complete') startAppRender();
+
+  function startAppRender() {
+    var getClientObj = app.initialized();
+
+    getClientObj.then(getClient).catch(errorHandler);
+
+    function getClient(_client) {
       client = _client;
       client.events.on('app.activated', startApp);
-    })
-    .catch(errorHandler);
-}
+    }
+  }
+};
 
 function startApp() {
-  var quoteOne = document.querySelector('.quote-one');
-  client.request.invoke('getQuote', {}).then(
-    data => {
-      quoteOne.innerText = String(JSON.parse(data.response).quote);
-    },
-    error => {
-      console.log(error);
-    }
-  );
-  console.log('starting the app');
-  let firstPattern = document.querySelector('.savefirstPattern');
-  firstPattern.addEventListener('click', storePattern);
+  var firstQuote;
+  imposterFreeSetup.addEventListener('click', openModal);
 
-  let imposterFreeSetup = document.querySelector('.open-modal');
-  imposterFreeSetup.addEventListener('click', () => {
+  var renderQuote = client.request.invoke('getQuote', {});
+
+  renderQuote.then(data => {
+    firstQuote = String(JSON.parse(data.response).quote);
+    quoteOne.innerText = firstQuote;
+    localStorage.setItem('secondQuote', String(firstQuote));
+  }, errorHandler);
+
+  function openModal() {
+    var modal = { title: 'Secure Session', template: 'views/background.html' };
+    storePattern();
     client.interface
-      .trigger('showModal', {
-        title: 'Setup Imposter free session',
-        template: 'views/background.html'
-      })
-      .then(function(data) {
-        console.log('from imposterfreesetup', data);
-      })
-      .catch(function(error) {
-        console.log('from imposterfreesetup', error);
-      });
-  });
+      .trigger('showModal', modal)
+      .then(logger)
+      .catch(errorHandler);
+  }
 
   function storePattern() {
-    console.log('storing first pattern');
-    var firstPattern = tdna.getTypingPattern({ type: 0, length: 160 });
+    var firstPattern = tdna.getTypingPattern({
+      type: 1,
+      text: String(firstQuote)
+    });
     localStorage.setItem('firstPattern', firstPattern);
   }
 
@@ -90,18 +96,4 @@ function startApp() {
   // client.events.on('ticket.closeTicketClick', isImposter, {
   //   intercept: true
   // });
-}
-
-function errorHandler(err) {
-  console.error(`App failed to initialize because...`);
-  console.error(err);
-}
-
-function isDocumentReady() {
-  if (document.readyState != 'loading') {
-    console.info('Oh you deferred scripts!');
-    startAppRender();
-  } else {
-    document.addEventListener('DOMContentLoaded', startAppRender);
-  }
 }
