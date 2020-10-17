@@ -10,11 +10,6 @@ function addListener(classname, handler) {
     .addEventListener('fwChange', handler);
 }
 
-addListener('.interceptSendReply', shouldAllowReply);
-addListener('.interceptDelTkt', shouldDeleteTicket);
-addListener('.interceptPropUpdated', shouldAllowPropUpdate);
-addListener('.interceptCloseTkt', shouldCloseTkt);
-
 function handleLocalStorage(key) {
   if (
     localStorage.getItem(String(key)) == 'true' ||
@@ -27,21 +22,21 @@ function handleLocalStorage(key) {
   }
 }
 
-function shouldAllowReply() {
+addListener('.interceptSendReply', () => {
   handleLocalStorage('shouldInterceptReply');
-}
+});
 
-function shouldDeleteTicket() {
+addListener('.interceptDelTkt', () => {
   handleLocalStorage('shouldInterceptDelete');
-}
+});
 
-function shouldAllowPropUpdate() {
+addListener('.interceptPropUpdated', () => {
   handleLocalStorage('shouldInterceptUpdate');
-}
+});
 
-function shouldCloseTkt() {
+addListener('.interceptCloseTkt', () => {
   handleLocalStorage('interceptCloseTkt');
-}
+});
 
 document.onreadystatechange = function() {
   if (document.readyState == 'interactive') startAppRender();
