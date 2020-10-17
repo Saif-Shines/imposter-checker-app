@@ -16,9 +16,9 @@ document.onreadystatechange = function() {
   function startAppRender() {
     var getClientObj = app.initialized();
 
-    getClientObj.then(addClient).catch(errorHandler);
+    getClientObj.then(getClient).catch(errorHandler);
 
-    function addClient(_client) {
+    function getClient(_client) {
       client = _client;
       client.events.on('app.activated', startApp);
     }
