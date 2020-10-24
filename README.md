@@ -11,8 +11,8 @@ It is an web app that runs on a ticketing tool called [Freshdesk](https://freshd
 
 **What does Demo doesn't cover?**
 1. I plan on improving UX ([Improved now](/screenshots/))
-2. Refactor the code to be more readable
-3. All other updates post October 10, 2020.
+2. Refactor the code to be more readable (Done)
+3. All other updates post October 10, 2020. (Done as planned)
 
 I intend to implement them until the Oct 31, 2020. To abide by this you can check the commits made via [my Github Repository](https://github.com/Saif-Shines/imposter-checker-app). I will keep pushing them :-)
 
