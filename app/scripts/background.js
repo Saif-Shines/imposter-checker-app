@@ -39,9 +39,10 @@ addListener('.interceptCloseTkt', () => {
 });
 
 document.onreadystatechange = function() {
-  if (document.readyState == 'interactive') startAppRender();
+  if (document.readyState == 'complete') startAppRender();
 
   function startAppRender() {
+    logger('app started rendering..')
     var onInit = app.initialized();
     var quoteTwoBtn = document.querySelector('.quote-two');
     var saveSettings = document.querySelector('.saveSettings');
