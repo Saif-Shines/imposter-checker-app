@@ -6,10 +6,11 @@ It is an web app that runs on a ticketing tool called [Freshdesk](https://freshd
 
 ### Demo
 ![Alt](https://i.ibb.co/4FbDRR1/image.png)
+![Alt](/screenshots/improved%20ux%20-%20page%202.png)
 [See the Screenshot](https://ibb.co/YN5KBB0)
 
 **What does Demo doesn't cover?**
-1. I plan on improving UX ([Improved now](/screenshots/initial%20submission%20ui.png))
+1. I plan on improving UX ([Improved now](/screenshots/))
 2. Refactor the code to be more readable
 3. All other updates post October 10, 2020.
 
